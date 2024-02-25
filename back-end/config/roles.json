@@ -1,0 +1,59 @@
+{
+    "roles": [
+      {
+        "name": "ADMIN", 
+        "permissions": [
+          "add_edit_organisation",
+          "fetch_organisations_list",
+          "fetch_organisation",
+          "fetch_experts_list",
+          "fetch_users_list",
+          "fetch_user",
+          "add_profession",
+          "fetch_professions",
+          "add_language",
+          "fetch_languages",
+          "add_expertise",
+          "fetch_expertise",
+          "fetch_experts_by_admin",
+          "fetch_states",
+          "count_user_legalExpert_organisation",
+          "change_expert_status",
+          "delete_organisation",
+          "add_edit_legal_section",
+          "fetch_section",
+          "fetch_section_list",
+          "edit_legal_subSection",
+          "delete_section",
+          "delete_subSection"
+        ]
+      },
+      {
+        "name": "CHILD", 
+        "permissions": [
+          "fetch_organisations_list",
+          "fetch_organisation",
+          "delete_user",
+          "raise_query",
+          "fetch_user_query",
+          "fetch_experts_list",
+          "fetch_experts_list_by_user",
+          "fetch_expert",
+          "delete_account",
+          "upload_profile_picture",
+          "fetch_section",
+          "fetch_section_list"
+        ]
+      },
+      {
+        "name": "LEGAL_EXPERT",
+        "permissions": [
+          "fetch_user_queries",
+          "fetch_answered_user_queries",
+          "answer_query",
+          "change_expert_password",
+          "fetch_query_count"
+        ]
+      }
+    ]
+  }

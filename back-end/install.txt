@@ -1,0 +1,3 @@
+npm install -g express-generator
+npm i mongoose cors dotenv nodemon express nodemon
+npm i bcrypt cookie-parser jsonwebtoken
