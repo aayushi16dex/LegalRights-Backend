@@ -2,15 +2,24 @@ const Expert = require('../../models/legalExpert/expertModel');
 
 // Fetch list of all legal experts
 fetchExpertsListForUser = async (req, res) => {
-    const [expertList, totalCount] = await Promise.all([
-        Expert.find({active: true})
-            .select('firstName lastName displayPicture experienceYears profession expertise')
-            .populate("profession")
-            .populate("expertise")
-            .sort({active: -1, firstName: 1, lastName: 1}),
-        Expert.countDocuments({ active: true }),
-    ]);
-    res.json({ totalCount, expertList });
+    let page = req.params.page ?? 1;
+    let limit = 10;
+    try {
+        const expertList = await Expert.find({ active: true })
+                .select('firstName lastName displayPicture experienceYears profession expertise')
+                .populate("profession")
+                .populate("expertise")
+                .sort({ active: -1, firstName: 1, lastName: 1 })
+                .skip((page * limit) - limit)
+                .limit(limit);
+        
+        var totalCount = expertList.length;
+        res.json({ totalCount, expertList });
+    }
+    catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
 }
 
 // Fetch data of a particular legal expert

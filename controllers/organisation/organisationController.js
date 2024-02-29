@@ -2,10 +2,12 @@ const Organisation = require('../../models/organisation/organisationModel')
 
 // Fetch list of all organisations
 fetchOrganisationsList = async (req, res) => {
-    const [orgList, totalCount] = await Promise.all([
-        Organisation.find(),
-        Organisation.countDocuments(),
-    ]);
+    let page = req.params.page ?? 1;
+    let limit = 10;
+    const orgList= await Organisation.find()
+                                .skip((page * limit) - limit)
+                                .limit(limit);
+    var totalCount = orgList.length;
     res.status(200).json({ totalCount, orgList });
 }
 

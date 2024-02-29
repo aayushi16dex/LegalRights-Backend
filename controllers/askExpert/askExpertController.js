@@ -25,10 +25,12 @@ raiseQuery = async (req, res) => {
 fetchUserQuery = async (req, res) => {
     const userData = await authenticateUser(req);
     const userId = userData.userId;
-    const [queryList, totalCount] = await Promise.all([
-        AskExpert.find({ userId: userId }),
-        AskExpert.countDocuments({ userId: userId })
-    ]);
+    let page = req.params.page ?? 1;
+    let limit = 10;
+    const queryList = await AskExpert.find({ userId: userId })
+                                    .skip((page * limit) - limit)
+                                    .limit(limit);;
+    var totalCount = queryList.length;
     res.json({ totalCount, queryList });
 };
 

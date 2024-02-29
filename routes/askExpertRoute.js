@@ -8,6 +8,6 @@ const askExpertController = require('../controllers/askExpert/askExpertControlle
 // Protect the route with RBAC middleware
 // Only for users
 router.post('/raiseQuery', rbacMiddleware.checkPermission('raise_query'), askExpertController.raiseQuery );
-router.get('/fetchQueries', rbacMiddleware.checkPermission('fetch_user_query') ,askExpertController.fetchUserQuery);
+router.get('/fetchQueries/:page?', rbacMiddleware.checkPermission('fetch_user_query') ,askExpertController.fetchUserQuery);
 
 module.exports = router;

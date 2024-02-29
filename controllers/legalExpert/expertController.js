@@ -30,10 +30,15 @@ changePassword = async (req, res) => {
 fetchUnansweredUserQueries = async (req, res) => {
     const userData = await authenticateUser(req);
     const expertId = userData.userId;
+    let page = req.params.page ?? 1;
+    let limit = 10;
 
     try {
-        const queryList = await AskExpert.find({ expertId: expertId, answered: false });
-        res.status(200).json({ queryList });
+        const queryList = await AskExpert.find({ expertId: expertId, answered: false })
+                                        .skip((page * limit) - limit)
+                                        .limit(limit);
+        var count =queryList.length;
+        res.status(200).json({ count, queryList});
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Internal Server Error' });
@@ -44,10 +49,15 @@ fetchUnansweredUserQueries = async (req, res) => {
 fetchAnsweredUserQueries = async (req, res) => {
     const userData = await authenticateUser(req);
     const expertId = userData.userId;
+    let page = req.params.page ?? 1;
+    let limit = 10;
 
     try {
-        const queryList = await AskExpert.find({ expertId: expertId, answered: true });
-        res.status(200).json({ queryList });
+        const queryList = await AskExpert.find({ expertId: expertId, answered: true })
+                                        .skip((page * limit) - limit)
+                                        .limit(limit);;
+        var count =queryList.length;
+        res.status(200).json({ count, queryList });
     } catch (error) {
         console.error(error);
         res.status(500).json({ error: 'Internal Server Error' });
