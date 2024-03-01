@@ -12,9 +12,12 @@ const a_legalExpertController = require('../controllers/admin/a_legalExpertContr
 const a_organisationController = require('../controllers/admin/a_organisationController')
 const a_userController = require('../controllers/admin/a_userController');
 const a_legalContentController = require('../controllers/admin/a_legalContentController');
+const authController = require('../controllers/user/authController');
 // Protect the route with RBAC middleware
 
 // Expert
+router.post('/addExpert', rbacMiddleware.checkPermission('add_expert'), authController.registerOrEditExpert);
+router.put('/editExpert/:id', rbacMiddleware.checkPermission('edit_expert'), authController.registerOrEditExpert);
 router.put('/changeStatus/:id',rbacMiddleware.checkPermission('change_expert_status'),  a_legalExpertController.changeExpertStatus);
 router.post('/addProfession', rbacMiddleware.checkPermission('add_profession'), a_legalExpertController.addProfession);
 router.get('/fetchProfession', rbacMiddleware.checkPermission('fetch_professions'),  a_legalExpertController.fetchProfessions);
@@ -22,7 +25,6 @@ router.post('/addLanguage', rbacMiddleware.checkPermission('add_language'), a_le
 router.get('/fetchLanguage', rbacMiddleware.checkPermission('fetch_languages'), a_legalExpertController.fetchLanguages);
 router.post('/addExpertise', rbacMiddleware.checkPermission('add_expertise'), a_legalExpertController.addExpertise);
 router.get('/fetchExpertise', rbacMiddleware.checkPermission('fetch_expertise'), a_legalExpertController.fetchExpertise);
-router.get('/fetchStates', rbacMiddleware.checkPermission('fetch_states'), a_legalExpertController.fetchStates);
 router.get('/fetchStates', rbacMiddleware.checkPermission('fetch_states'), a_legalExpertController.fetchStates);
 router.get('/fetchExperts/:page?', rbacMiddleware.checkPermission('fetch_experts_by_admin'), a_legalExpertController.fetchExpertsListForAdmin);
 

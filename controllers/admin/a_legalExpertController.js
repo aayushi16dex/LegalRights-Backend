@@ -72,22 +72,22 @@ addExpertise = async (req, res) => {
 
 // Get list of all professions
 fetchProfessions = async (req, res) => {
-    res.json(await Profession.find());
+    res.json(await Profession.find().sort({professionName:1}));
 }
 
 // Get list of all languages
 fetchLanguages = async (req, res) => {
-    res.json(await Language.find());
+    res.json(await Language.find().sort({languageName:1}));
 }
-  
+
 // Get list of all expertise
 fetchExpertise = async (req, res) => {
-    res.json(await Expertise.find());
+    res.json(await Expertise.find().sort({expertiseField:1}));
 };
 
 // Get list of all states
 fetchStates =  async (req, res) => {
-    res.json(await IndianStates.find());
+    res.json(await IndianStates.find().sort({name:1}));
 }
 
 // Activate or deactivate legal expert account

@@ -29,7 +29,12 @@ fetchUserQuery = async (req, res) => {
     let limit = 10;
     const queryList = await AskExpert.find({ userId: userId })
                                     .skip((page * limit) - limit)
-                                    .limit(limit);;
+                                    .limit(limit)
+                                    .populate({
+                                        path: "expertId",
+                                        select: "firstName lastName" 
+                                    })
+                                    .sort({createdAt:-1});
     var totalCount = queryList.length;
     res.json({ totalCount, queryList });
 };

@@ -25,7 +25,9 @@
           "fetch_section_list",
           "edit_legal_subSection",
           "delete_section",
-          "delete_subSection"
+          "delete_subSection",
+          "delete_account",
+          "add_expert"
         ]
       },
       {
@@ -52,7 +54,8 @@
           "fetch_answered_user_queries",
           "answer_query",
           "change_expert_password",
-          "fetch_query_count"
+          "fetch_query_count",
+          "edit_expert"
         ]
       }
     ]

@@ -36,7 +36,11 @@ fetchUnansweredUserQueries = async (req, res) => {
     try {
         const queryList = await AskExpert.find({ expertId: expertId, answered: false })
                                         .skip((page * limit) - limit)
-                                        .limit(limit);
+                                        .limit(limit)
+                                        .populate({
+                                            path: "userId",
+                                            select: "firstName lastName" 
+                                        });
         var count =queryList.length;
         res.status(200).json({ count, queryList});
     } catch (error) {
@@ -55,7 +59,11 @@ fetchAnsweredUserQueries = async (req, res) => {
     try {
         const queryList = await AskExpert.find({ expertId: expertId, answered: true })
                                         .skip((page * limit) - limit)
-                                        .limit(limit);;
+                                        .limit(limit)
+                                        .populate({
+                                            path: "userId",
+                                            select: "firstName lastName" 
+                                        });
         var count =queryList.length;
         res.status(200).json({ count, queryList });
     } catch (error) {

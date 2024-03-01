@@ -21,18 +21,27 @@ findUser = async (req, res) => {
 
 // Delete a user account - Cascade delete (profile, ask expert queries, user)
 deleteUserAccount = async (req, res) => {
-    const userData = await authenticateUser(req, res);
-    const response = await User.deleteOne({ _id: userData.userId });
+    try{
+    // const userData = await authenticateUser(req, res);
+    var id = req.params.id;
+    // const response = await User.deleteOne({ _id: userData.userId });
+    const response = await User.deleteOne({ _id: id });
     if (response.deletedCount == 0)
         return res.status(404).json({ msg: 'User not found' });
     else
-        res.clearCookie('token', {
-            httpOnly: true,
-            secure: true,
-            sameSite: 'None',
-        })
+        res
+    // .clearCookie('token', {
+    //         httpOnly: true,
+    //         secure: true,
+    //         sameSite: 'None',
+    //     })
             .status(200)
             .json("Successfully deleted");
+    }
+    catch (error) {
+        console.log(error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
 }
 
 // Fetch user details
