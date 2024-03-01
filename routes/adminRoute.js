@@ -24,7 +24,7 @@ router.post('/addExpertise', rbacMiddleware.checkPermission('add_expertise'), a_
 router.get('/fetchExpertise', rbacMiddleware.checkPermission('fetch_expertise'), a_legalExpertController.fetchExpertise);
 router.get('/fetchStates', rbacMiddleware.checkPermission('fetch_states'), a_legalExpertController.fetchStates);
 router.get('/fetchStates', rbacMiddleware.checkPermission('fetch_states'), a_legalExpertController.fetchStates);
-router.get('/fetchExperts', rbacMiddleware.checkPermission('fetch_experts_by_admin'), a_legalExpertController.fetchExpertsListForAdmin);
+router.get('/fetchExperts/:page?', rbacMiddleware.checkPermission('fetch_experts_by_admin'), a_legalExpertController.fetchExpertsListForAdmin);
 
 
 // Count 

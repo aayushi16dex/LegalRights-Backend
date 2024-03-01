@@ -117,14 +117,16 @@ changeExpertStatus = async (req, res) => {
 
 // Fetch legal experts
 fetchExpertsListForAdmin = async (req, res) => {
-    const [expertList, totalCount] = await Promise.all([
-        Expert.find()
-            .select('firstName lastName displayPicture experienceYears profession expertise active')
-            .populate("profession")
-            .populate("expertise")
-            .sort({active: -1, firstName: 1, lastName: 1}),
-        Expert.countDocuments({ active: true }),
-    ]);
+    let page = req.params.page ?? 1;
+    let limit = 10;
+    const expertList = await Expert.find()
+                            .select('firstName lastName displayPicture experienceYears profession expertise active')
+                            .populate("profession")
+                            .populate("expertise")
+                            .sort({active: -1, firstName: 1, lastName: 1})
+                            .skip((page * limit) - limit)
+                            .limit(limit);
+    var totalCount = expertList.length;
     res.json({ activeExpertCount: totalCount, expertList });
 }
 
