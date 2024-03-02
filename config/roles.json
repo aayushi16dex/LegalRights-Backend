@@ -9,6 +9,7 @@
           "fetch_experts_list",
           "fetch_users_list",
           "fetch_user",
+          "fetch_expert",
           "add_profession",
           "fetch_professions",
           "add_language",
