@@ -13,18 +13,18 @@ async function authenticateUser(req, res) {
     var expertExist;
     var tokenValue = '';
 
+    /** Cookie **/
    if (req.headers.cookie){
-    // Cookie
     const tokenString = req.headers.cookie;
     tokenValue = tokenString ? tokenString.split('=')[1].trim() : '';
    }
-    // Authorization token
+    /** Authorization token **/
     else{
         const authorizationHeader = req.headers.authorization;
         tokenValue = authorizationHeader ? authorizationHeader.replace('Bearer ', '').trim() : '';
     }
 
-    if (!tokenValue) {
+    if (!tokenValue || tokenValue == "{{token}}") {
         return { error: 'Authentication failed. Please log in again.' };
     }
     const userData = await getUserData(tokenValue);

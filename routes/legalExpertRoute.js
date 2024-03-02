@@ -8,7 +8,7 @@ const expertController = require('../controllers/legalExpert/expertController');
 const fetchExpertController = require('../controllers/legalExpert/fetchExpertController');
 
 // Protect the route with RBAC middleware
-router.get('/fetch/:page?', rbacMiddleware.checkPermission('fetch_experts_list_by_user'), fetchExpertController.fetchExpertsListForUser);
+router.get('/fetchList/:page?', rbacMiddleware.checkPermission('fetch_experts_list_by_user'), fetchExpertController.fetchExpertsListForUser);
 router.get('/fetch/:id',rbacMiddleware.checkPermission('fetch_expert'),  fetchExpertController.fetchExpert);
 
 router.patch('/changePassword', rbacMiddleware.checkPermission('change_expert_password'), expertController.changePassword);
