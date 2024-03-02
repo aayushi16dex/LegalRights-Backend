@@ -3,7 +3,7 @@ const User = require('../../models/user/userModel');
 const Expert = require('../../models/legalExpert/expertModel');
 const XUser = require('../../utils/constants/XUser');
 
-// Check if user exists
+/** Check if user exists **/
 findUser = async (req, res) => {
     try {
         // const userData = await authenticateUser(req);
@@ -19,22 +19,20 @@ findUser = async (req, res) => {
     }
 }
 
-// Delete a user account - Cascade delete (profile, ask expert queries, user)
+/**  Delete a user account - Cascade delete (profile, ask expert queries, user) **/
 deleteUserAccount = async (req, res) => {
     try{
-    // const userData = await authenticateUser(req, res);
-    var id = req.params.id;
-    // const response = await User.deleteOne({ _id: userData.userId });
-    const response = await User.deleteOne({ _id: id });
+    const userData = await authenticateUser(req, res);
+    const response = await User.deleteOne({ _id: userData.userId });
     if (response.deletedCount == 0)
         return res.status(404).json({ msg: 'User not found' });
     else
         res
-    // .clearCookie('token', {
-    //         httpOnly: true,
-    //         secure: true,
-    //         sameSite: 'None',
-    //     })
+            .clearCookie('token', {
+                    httpOnly: true,
+                    secure: true,
+                    sameSite: 'None',
+                })
             .status(200)
             .json("Successfully deleted");
     }
@@ -44,7 +42,7 @@ deleteUserAccount = async (req, res) => {
     }
 }
 
-// Fetch user details
+/**  Fetch user details **/
 userProfileData = async (req, res) => {
     try {
         var userResponse = '';
