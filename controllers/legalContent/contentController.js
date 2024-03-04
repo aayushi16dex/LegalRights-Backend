@@ -12,8 +12,13 @@ fetchSectionsList = async (req, res) => {
 // Fetch a sub section
 fetchSubSection = async (req, res) => {
     const sectionId = req.params.id;
-    const subSectionList = await SubSection.find({sectionId: sectionId});
-    res.status(200).json({ sectionData: subSectionList });
+    const subSectionList = await SubSection.findOne({sectionId: sectionId});
+    if (subSectionList == null){
+        return res.status(400).json({ msg: "Invalid section Id" });
+    }
+    else{
+        res.status(200).json({ sectionData: subSectionList });
+    }
 };
 
 module.exports = {
