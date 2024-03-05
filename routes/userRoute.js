@@ -18,7 +18,7 @@ router.post('/logout', authController.logoutUser);
 router.post('/resetPasswordRequest', resetPasswordController.resetPasswordRequest )
 router.post('/resetPassword', resetPasswordController.resetPassword);
 router.get('/findUser', userController.findUser);
-router.delete('/deleteAccount/:id', rbacMiddleware.checkPermission('delete_account'), userController.deleteUserAccount);
+router.delete('/deleteAccount', rbacMiddleware.checkPermission('delete_account'), userController.deleteUserAccount);
 router.get('/profile', userController.userProfileData);
 router.put('/uploadProfilePicture', rbacMiddleware.checkPermission('upload_profile_picture'), photoMiddleware.single('photo'), profileController.uploadProfilePicture);
 
