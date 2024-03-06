@@ -17,6 +17,7 @@ router.put('/edit/:id', authController.registerOrEditUser);
 router.post('/logout', authController.logoutUser);
 router.post('/resetPasswordRequest', resetPasswordController.resetPasswordRequest )
 router.post('/resetPassword', resetPasswordController.resetPassword);
+router.patch('/changePassword', userController.changeUserPassword);
 router.get('/findUser', userController.findUser);
 router.delete('/deleteAccount', rbacMiddleware.checkPermission('delete_account'), userController.deleteUserAccount);
 router.get('/profile', userController.userProfileData);
