@@ -25,9 +25,20 @@ addOrEditOrganisation = async (req, res) => {
         /** Edit organisation **/
         else {
             const organisationId = req.params.id;
+            var doesExist = await Organisation.findOne({_id:organisationId});
+
             /** Get path of image */
-            const organisationImage = getImagePath(req, res);
+            const organisationImage = setImagePath(req, res);
+            
+            /** If organisationId does not exist */
+            if (doesExist == null){
+                deleteImage(organisationImage);
+                return res.status(404).json({msg: 'Organisation not found' });
+            }
+            
+            /** If new image is there, replace it with previous one */
             if (organisationImage != ''){
+                deleteImage(doesExist.organisationImage);
                 organisationData.organisationImage = organisationImage;
             }
             
@@ -45,7 +56,7 @@ addOrEditOrganisation = async (req, res) => {
     }
 };
 
-// Delete organisation
+/** Delete organisation */
 deleteOrganisation = async (req, res) => {
     const orgId = req.params.id;
     try {
