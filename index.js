@@ -19,8 +19,8 @@ mongoose.connect(process.env.MONGO_URL,
   .then(() => console.log('Database connected successfully'))
   .catch((err) => { console.error(err); });
 
-app.use(express.json())
-app.use(express.urlencoded({ extended: true }))
+app.use(express.json({ limit: "15mb", extended: true }))
+app.use(express.urlencoded({ limit: "15mb", extended: true, parameterLimit: 50000 }))
 app.get('/', (req, res) => {
   res.send('Server is running');
 });
