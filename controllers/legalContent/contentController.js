@@ -4,7 +4,7 @@ const SubSection = require('../../models/legalContent/subSectionModel')
 
 // Fetch all sections
 fetchSectionsList = async (req, res) => {
-    const sectionList = await Section.find();
+    const sectionList = await Section.find().sort({sectionNumber: 1});
     
     res.status(200).json({ sectionList });
 };
