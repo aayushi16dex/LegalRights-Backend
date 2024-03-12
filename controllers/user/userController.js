@@ -58,13 +58,13 @@ userProfileData = async (req, res) => {
         if (role == XUser.ROLE_LEGALEXPERT) {
             userResponse = await Expert.findOne(
                 { _id: userData.userId },
-                'firstName lastName role joinedOn displayPicture'
+                'email firstName lastName role joinedOn displayPicture'
             );
         }
         else if (role == XUser.ROLE_CHILD || role == XUser.ROLE_ADMIN) {
             userResponse = await User.findOne(
                 { _id: userData.userId },
-                'firstName lastName role joinedOn displayPicture'
+                'email firstName lastName role joinedOn displayPicture'
             );
         }
         else {
