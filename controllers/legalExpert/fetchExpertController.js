@@ -28,6 +28,7 @@ fetchExpert = async (req, res) => {
 
     try {
         const expert = await Expert.findById(expertId)
+            .select('-password')
             .populate("languagesKnown")
             .populate("expertise")
             .populate("profession")
