@@ -8,6 +8,7 @@
     "express": "^4.18.2",
     "file-type": "^18.7.0",
     "fs": "^0.0.1-security",
+    "generate-password": "^1.7.1",
     "handlebars": "^4.7.8",
     "image-downloader": "^4.3.0",
     "jsonwebtoken": "^9.0.2",

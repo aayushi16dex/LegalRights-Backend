@@ -8,6 +8,7 @@ const bcrypt = require('bcrypt');   //password hashing
 const bcryptSalt = process.env.SALT_ROUNDS;
 const defaultExpertPassword = process.env.LEGAL_EXPERT_DEFAULT_PASSWORD;
 const jwt = require('jsonwebtoken');   //authentication
+const generator = require('generate-password');
 
 const cookieParser = require('cookie-parser');
 const sendEmail = require('../../utils/email/sendEmail');
@@ -88,11 +89,11 @@ registerOrEditExpert = async (req, res) => {
             if (isExisting) {
                 return res.status(409).json({ msg: 'Email has already been registered' });
             }
-            userPassword = defaultExpertPassword;
+            userPassword = await generatePassword();
             var expertData = req.body;
             expertData.password = await hashPassword(userPassword);
             expertData.joinedOn = new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' })
-            registerExpert(expertData, res);
+            registerExpert(expertData, res, userPassword);
         }
     }
     catch (error) {
@@ -236,7 +237,7 @@ async function editChild(req, res) {
 }
 
 // function to handle expert register
-async function registerExpert(expertData, res) {
+async function registerExpert(expertData, res, userPassword) {
     try {
         const expertDoc = await Expert.create(expertData);
         await expertDoc.save();
@@ -252,7 +253,7 @@ async function registerExpert(expertData, res) {
         await sendEmail(
             expertEmail,
             "Profile created successfully",
-            { name: expertName, email: expertEmail, password: process.env.LEGAL_EXPERT_DEFAULT_PASSWORD },
+            { name: expertName, email: expertEmail, password: userPassword },
             "./template/expertAccountCreation.handlebars",
             res
         );
@@ -314,6 +315,17 @@ async function  hashPassword(userPassword) {
     salt = await bcrypt.genSalt(Number(bcryptSalt));
     hashedPassword = await bcrypt.hash(userPassword, salt);
     return hashedPassword;
+}
+
+async function generatePassword(){
+    const password = generator.generate({
+        length: 8, 
+        uppercase: true, 
+        lowercase: true, 
+        numbers: true, 
+        symbols: true,
+    });
+    return password;
 }
 module.exports =
 {
