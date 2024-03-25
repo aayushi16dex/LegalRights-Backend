@@ -27,7 +27,7 @@ const sendEmail = async (email, subject, payload, template, res) => {
     };
     // Send email
     await transporter.sendMail(options());
-    return res.status(200).json({ msg: "success", link: payload.link });
+    return true;
   } catch (error) {
     console.error("Error sending email:", error.message);
     throw error; // rethrow the error for the calling function to handle

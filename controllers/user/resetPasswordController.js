@@ -56,7 +56,7 @@ resetPasswordRequest = async (req, res) => {
             { name: userName, link: link, },
             "./template/requestResetPassword.handlebars",
             res);
-        return link;
+        return res.status(200).json({ msg: "success", link });
     }
     catch (error) {
         console.log(error.message)
@@ -115,7 +115,7 @@ resetPassword = async (req, res) => {
         console.log("No user found");
     }
 
-    sendEmail(
+    await sendEmail(
         userEmail,
         "Password Reset Successfully",
         { name: userName },
@@ -124,7 +124,7 @@ resetPassword = async (req, res) => {
     );
 
     await passwordResetToken.deleteOne();
-    return true;
+    return res.status(200).json({ msg: "success"});
 }
 
 // Function to set user data

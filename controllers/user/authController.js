@@ -10,6 +10,7 @@ const defaultExpertPassword = process.env.LEGAL_EXPERT_DEFAULT_PASSWORD;
 const jwt = require('jsonwebtoken');   //authentication
 
 const cookieParser = require('cookie-parser');
+const sendEmail = require('../../utils/email/sendEmail');
 app.use(cookieParser());
 
 /** Role and password cannot be updated*/
@@ -241,8 +242,20 @@ async function registerExpert(expertData, res) {
         await expertDoc.save();
 
         const { password, ...others } = expertDoc._doc;
+        var expertName = expertData.firstName;
+        var expertEmail = expertData.email;
+        // Check if last name exists and is not an empty string
+        if (expertData.lastName && expertData.lastName.trim() !== "") {
+            expertName += " " + expertData.lastName;
+        }
 
-        // await createProfile(userDoc);
+        await sendEmail(
+            expertEmail,
+            "Profile created successfully",
+            { name: expertName, email: expertEmail, password: process.env.LEGAL_EXPERT_DEFAULT_PASSWORD },
+            "./template/expertAccountCreation.handlebars",
+            res
+        );
         return res.status(201).json({ userData: others, msg: 'Successfully registered' });
     }
     catch (error) {
