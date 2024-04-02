@@ -3,7 +3,6 @@ const router = express.Router();
 const rbacMiddleware = require('../middleware/rbacMiddleware');
 const multer = require('multer');
 const videoMiddleware = multer({ dest: 'uploads' });
-const photoMiddleware = multer({ dest: 'uploads' });
 
 // Import controller
 
@@ -37,8 +36,8 @@ router.get('/fetchAllUser', rbacMiddleware.checkPermission('fetch_users_list'), 
 router.get('/fetchUser/:id', rbacMiddleware.checkPermission('fetch_user'), a_userController.fetchUser);
 
 // Organisation
-router.post('/organisation', rbacMiddleware.checkPermission('add_edit_organisation'), photoMiddleware.single('organisationImage'), a_organisationController.addOrEditOrganisation);
-router.put('/organisation/:id', rbacMiddleware.checkPermission('add_edit_organisation'), photoMiddleware.single('organisationImage'), a_organisationController.addOrEditOrganisation);
+router.post('/organisation', rbacMiddleware.checkPermission('add_edit_organisation'), a_organisationController.addOrEditOrganisation);
+router.put('/organisation/:id', rbacMiddleware.checkPermission('add_edit_organisation'), a_organisationController.addOrEditOrganisation);
 router.delete('/deleteOrganisation/:id', rbacMiddleware.checkPermission('delete_organisation'), a_organisationController.deleteOrganisation);
 
 // Legal content
