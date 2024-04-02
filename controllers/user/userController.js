@@ -106,6 +106,36 @@ changeUserPassword = async (req, res) => {
     }
 }
 
+const uploadProfilePicture = async (req, res) => {
+    try {
+        const userData = await authenticateUser(req, res);
+        var displayPic = req.body.displayPicture;
+        var updatedUserProfile;
+        if (userData.role == XUser.ROLE_CHILD || userData.role == XUser.ROLE_ADMIN) {
+            updatedUserProfile = await User.findOneAndUpdate(
+                { _id: userData['userId'] },
+                { $set: { displayPicture: displayPic } },
+                { new: true }
+            );
+        }
+        else if (userData.role == XUser.ROLE_LEGALEXPERT) {
+            updatedUserProfile = await Expert.findOneAndUpdate(
+                { _id: userData['userId'] },
+                { $set: { displayPicture: displayPic } },
+                { new: true }
+            );
+        }
+        else{
+            return res.status(404).json({ error: "Role not found"});
+        }
+        return res.status(200).json({ displayPicture: updatedUserProfile['displayPicture'] });
+    }
+    catch (error) {
+        console.log(error.message)
+        return res.status(500).json({ error: "Internal Server Error" });
+    }
+};
+
 async function comparePassword(res, userData, password) {
 
     var userDoc = await User.findOne({ _id: userData.userId }, { password: 1 });
@@ -121,5 +151,6 @@ module.exports = {
     findUser,
     deleteUserAccount,
     userProfileData,
-    changeUserPassword
+    changeUserPassword,
+    uploadProfilePicture
 };
