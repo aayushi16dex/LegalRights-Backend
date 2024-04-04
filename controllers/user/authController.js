@@ -6,7 +6,6 @@ const authenticateUser = require('../../middleware/authenticateUser')
 const XUser = require('../../utils/constants/XUser')
 const bcrypt = require('bcrypt');   //password hashing
 const bcryptSalt = process.env.SALT_ROUNDS;
-const defaultExpertPassword = process.env.LEGAL_EXPERT_DEFAULT_PASSWORD;
 const jwt = require('jsonwebtoken');   //authentication
 const generator = require('generate-password');
 
@@ -72,7 +71,8 @@ registerOrEditExpert = async (req, res) => {
                 console.log(error.message);
                 return res.status(500).json({ error: "Internal server error" });
             }
-            else if (userData.userId != req.params.id) {
+            // Checks if user editing the profile is the expert himself or admin
+            else if (userData.userId != req.params.id && userData.role != XUser.ROLE_ADMIN) {
                 return res.status(403).json({ error: "Access denied" });
             }
             // Checks if req email is not there in DB
