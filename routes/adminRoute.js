@@ -44,17 +44,7 @@ router.delete('/deleteOrganisation/:id', rbacMiddleware.checkPermission('delete_
 router.post('/section', rbacMiddleware.checkPermission('add_edit_legal_section'), a_legalContentController.addOrEditSection);
 router.put('/section/:id', rbacMiddleware.checkPermission('add_edit_legal_section'), a_legalContentController.addOrEditSection);
 router.delete('/deleteSection/:id', rbacMiddleware.checkPermission('delete_section'), a_legalContentController.deleteSection );
-router.put(
-    '/subSection/:id',
-    rbacMiddleware.checkPermission('edit_legal_subSection'),
-    videoMiddleware.fields([
-        { name: 'introductionVideo' },
-        { name: 'contentVideo1' },
-        { name: 'narratorVideo' },
-        { name: 'contentVideo2' }
-    ]),
-    a_legalContentController.editSubSection
-);
+router.put('/subSection/:id', rbacMiddleware.checkPermission('edit_legal_subSection'), a_legalContentController.editSubSection);
 
 module.exports = router;
 

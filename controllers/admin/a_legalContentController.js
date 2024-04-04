@@ -64,7 +64,28 @@ deleteSection = async (req, res) => {
 // Adding content to sub section
 editSubSection = async (req, res) => {
     try {
-        saveVideos(req, res);
+        var subSectionData = {};
+
+        if (req.body.introductionVideo != null) {
+            subSectionData.introductionVideo = req.body.introductionVideo;
+        }
+        if (req.body.contentVideo1 != null) {
+            subSectionData.contentVideo1 = req.body.contentVideo1;
+        }
+        if (req.body.narratorVideo != null) {
+            subSectionData.narratorVideo = req.body.narratorVideo;
+        }
+        if (req.body.contentVideo2 != null) {
+            subSectionData.contentVideo2 = req.body.contentVideo2;
+        }
+        const subSectionDoc = await SubSection.findOneAndUpdate(
+            { sectionId: req.params.id },
+            subSectionData,
+            { new: true }
+        );
+
+        return res.status(200).json({ subSectionDoc, msg: 'Videos added successfully' });
+
     } catch (error) {
         console.log(error.message)
         return res.status(500).json({ error: "Internal Server Error" });
@@ -81,67 +102,6 @@ async function createSubSection(sectionId) {
         console.log(error.message)
         return res.status(500).json({ error: "Internal Server Error" });
     }
-}
-
-// Function to add videos of sub section
-async function saveVideos(req, res) {
-    if (!req.files || req.files.length === 0) {
-        return res.status(400).json({ error: 'No file uploaded' });
-    }
-    var sectionId = req.params.id;
-    const files = req.files;
-    const allowedExtensions = ['mp4'];
-    const errors = [];
-
-    const fieldNames = Object.keys(files);
-    const subSectionDoc = await SubSection.findOne({ sectionId: sectionId });
-
-    // Delete already existing files
-    deleteVideos(subSectionDoc, fieldNames );
-
-    Object.keys(files).forEach(key => {
-        const file = files[key][0];
-        const { path, originalname } = file;
-        const parts = originalname.split('.');
-        const ext = parts[parts.length - 1].toLowerCase();
-
-        if (!allowedExtensions.includes(ext)) {
-            // Delete the file and add an error message if it's not an allowed video type
-            fs.unlinkSync(path);
-            errors.push(`Invalid file type for ${originalname}. Only MP4 videos are allowed.`);
-            return;
-        }
-
-        const newPath = path + '.' + ext;
-        try {
-            fs.renameSync(path, newPath);
-        } catch (error) {
-            errors.push(`Error renaming file ${originalname}`);
-            return;
-        }
-
-        SubSection.findOneAndUpdate(
-            { sectionId: sectionId },
-            { $set: { [key]: newPath } },
-            { new: true }
-        )
-            .then((updatedDoc) => {
-                if (updatedDoc) {
-                    return;
-                } else {
-                    console.log("Error occured");
-                    return;
-                }
-            })
-            .catch((error) => {
-                console.log(error.message)
-                errors.push(error);
-            });
-    });
-    if (errors.length > 0) {
-        return res.status(400).json({ errors });
-    }
-    res.status(200).json({ msg: "All videos have been successfully uploaded" });
 }
 
 /** Delete already existing files **/
