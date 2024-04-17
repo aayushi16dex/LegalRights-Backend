@@ -35,7 +35,6 @@ const legalExpertRoute = require('./routes/legalExpertRoute');
 const adminRoute = require('./routes/adminRoute')
 const legalContentRoute = require('./routes/legalContentRoute')
 
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')))
 app.use('/utils', express.static(path.join(__dirname, 'utils')))
 app.use('/user', userRoute);
 app.use('/organisation', organisationRoute );

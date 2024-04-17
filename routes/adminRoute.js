@@ -1,9 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const rbacMiddleware = require('../middleware/rbacMiddleware');
-const multer = require('multer');
-const videoMiddleware = multer({ dest: 'uploads' });
-
 // Import controller
 
 const a_countController = require('../controllers/admin/a_countController');

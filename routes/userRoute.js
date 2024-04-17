@@ -1,9 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const rbacMiddleware = require('../middleware/rbacMiddleware');
-const multer = require('multer');
-const photoMiddleware = multer({ dest: 'uploads' });
-
 // Import controllers
 const authController = require('../controllers/user/authController');
 const resetPasswordController = require('../controllers/user/resetPasswordController');

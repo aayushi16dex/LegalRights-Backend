@@ -106,7 +106,7 @@ changeUserPassword = async (req, res) => {
     }
 }
 
-const uploadProfilePicture = async (req, res) => {
+uploadProfilePicture = async (req, res) => {
     try {
         const userData = await authenticateUser(req, res);
         var displayPic = req.body.displayPicture;
