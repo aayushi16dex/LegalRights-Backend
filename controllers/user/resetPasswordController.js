@@ -119,7 +119,7 @@ resetPassword = async (req, res) => {
         userEmail,
         "Password Reset Successfully",
         { name: userName },
-        "utils/email/template/resetPassword.handlebars",
+        "https://legalrights-backend.onrender.com/template/resetPassword.handlebars",
         res
     );
 
