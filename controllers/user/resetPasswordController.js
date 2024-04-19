@@ -119,7 +119,7 @@ resetPassword = async (req, res) => {
         userEmail,
         "Password Reset Successfully",
         { name: userName },
-        "./template/resetPassword.handlebars",
+        "utils/email/template/resetPassword.handlebars",
         res
     );
 
