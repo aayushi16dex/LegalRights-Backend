@@ -7,24 +7,31 @@ const bcryptSalt = process.env.SALT_ROUNDS;
 // change expert password after first time login
 changePassword = async (req, res) => {
     const expertData = await authenticateUser(req, res);
-    const expertId = expertData.userId;
+    const userId = expertData.userId;
+    const oldPassword = req.body.oldPassword;
+
+    const passwordMatches = await comparePassword(res, expertData, oldPassword);
+    if (!passwordMatches) {
+        return res.status(400).json({ msg: "Incorrect old password" });
+    }
 
     const salt = await bcrypt.genSalt(Number(bcryptSalt));
-    const hashedPassword = await bcrypt.hash(req.body.password, salt);
+    const hashedPassword = await bcrypt.hash(req.body.newPassword, salt);
 
     try {
         await Expert.updateOne(
-            { _id: expertId },
+            { _id: userId },
             { $set: { password: hashedPassword } },
             { new: true }  // returns modified doc
         );
-        res.status(200).json({ error: "Password updated successfully" });
+        res.status(200).json({ error: "Password changed successfully" });
     }
     catch (e) {
         console.log(e);
         res.status(500).json({ error: "Internal Server Error" });
     }
 }
+
 
 // Fetch unanswered user queries for a particular legal expert
 fetchUnansweredUserQueries = async (req, res) => {
@@ -115,6 +122,17 @@ fetchQueryCount = async(req, res) => {
         console.error(error);
         res.status(500).json({ error: 'Internal Server Error' });
     }
+}
+
+async function comparePassword(res, userData, password) {
+
+    var userDoc = await Expert.findOne({ _id: userData.userId }, { password: 1 });
+    if (!userDoc) {
+        return res.status(404).json({ msg: 'User not found' });
+    }
+    var storedPassword = userDoc.password;
+    const isPasswordCorrect = await bcrypt.compare(password, storedPassword);
+    return isPasswordCorrect;
 }
 
 module.exports =

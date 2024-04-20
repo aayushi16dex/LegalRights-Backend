@@ -323,7 +323,7 @@ async function generatePassword(){
         uppercase: true, 
         lowercase: true, 
         numbers: true, 
-        symbols: true,
+        symbols: false,
     });
     return password;
 }
